@@ -76,7 +76,7 @@ dunst -conf ~/.cache/wal/dunstrc &
 
 ## Generate GTK-Theme if not cached yet
 if [ ! -d "/home/Magnus/.themes/${filetitle}" ] || [ "$1" = "-R" ]; then
-	/home/Magnus/apps/oomox-gtk-theme/change_color.sh -o "$filetitle" <(echo -e "BG=${background:1}\nBTN_BG=${background:1}\nBTN_FG=${foreground:1}\nFG=${foreground:1}\nGRADIENT=0.0\nHDR_BTN_BG=FF0000\nHDR_BTN_FG=0e0021\nHDR_BG=${hl2}\nHDR_FG=${foreground:1}\nROUNDNESS=4\nSEL_BG=${hl}\nSEL_FG=000000\nSPACING=3\nTXT_BG=${background:1}\nTXT_FG=${foreground:1}\nWM_BORDER_FOCUS=9edc60\nWM_BORDER_UNFOCUS=0e0021\n")
+	/home/Magnus/apps/oomox-gtk-theme/change_color.sh -o "$filetitle" <(echo -e "BG=${background:1}\nBTN_BG=${background:1}\nBTN_FG=${foreground:1}\nFG=${foreground:1}\nGRADIENT=0.0\nHDR_BTN_BG=${hl2}\nHDR_BTN_FG=${foreground:1}\nHDR_BG=${hl2}\nHDR_FG=${foreground:1}\nROUNDNESS=4\nSEL_BG=${hl}\nSEL_FG=${foreground:1}\nSPACING=3\nTXT_BG=${background:1}\nTXT_FG=${foreground:1}\nWM_BORDER_FOCUS=${hl2}\nWM_BORDER_UNFOCUS=${foreground:1}\n")
 	generated="true"
 else
 	echo "gtk-theme found at /home/Magnus/.themes/${filetitle} => skipping regeneration"
@@ -85,11 +85,12 @@ fi
 
 ## Apply GTK-Theme
 sed -i "s/^gtk-theme-name=.*/gtk-theme-name=${filetitle}/" "/home/Magnus/.config/gtk-3.0/settings.ini"
-/home/Magnus/code/gtk-themeswitcher.sh
 
+/home/Magnus/code/gtk-themeswitcher.sh -M
+
+## Notification
 if [ "$generated" = "true" ]; then
-	dunstify -u low -r 2354 "Theme updated\nGTK regenerated"
+	dunstify -u low -r 2354 "Theme updated :: GTK-theme generated"
 else
-	dunstify -u low -r 2354 "Theme updated\nGTK loaded from cache"
+	dunstify -u low -r 2354 "Theme updated :: GTK-theme loaded from cache"
 fi
-

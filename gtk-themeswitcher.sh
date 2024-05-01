@@ -14,4 +14,6 @@ gsettings set "$gnome_schema" icon-theme "$icon_theme"
 gsettings set "$gnome_schema" cursor-theme "$cursor_theme"
 gsettings set "$gnome_schema" font-name "$font_name"
 
-dunstify -r 6690 -u low GTK-Theme updated
+if [ ! "$1" = "-M" ]; then
+    dunstify -r 6690 -u low GTK-Theme updated
+fi
