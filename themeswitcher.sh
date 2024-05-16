@@ -1,8 +1,8 @@
 #!/bin/bash
 
-directory="/home/Magnus/Pictures/wallpapers"
+directory="/home/Magnus/Bilder/wallpapers"
 
-items=$(ls /home/Magnus/Pictures/wallpapers/)
+items=$(ls /home/Magnus/Bilder/wallpapers/)
 
 selected=$(echo "$items" | rofi -dmenu -p "Select an item:")
 
@@ -72,7 +72,10 @@ sed -i "/^notfication[[:space:]]*=/s/=.*/= ${hl}/" ~/.config/spicetify/Themes/Sl
 sed -i "/^misc[[:space:]]*=/s/=.*/= ${color6:1}/" ~/.config/spicetify/Themes/Sleek/color.ini
 
 ## restart dunst
-dunst -conf ~/.cache/wal/dunstrc &
+dunst -conf /home/Magnus/.cache/wal/dunstrc &
+
+## NWG-Menu
+cp /home/Magnus/.cache/wal/menu-start.css /home/Magnus/.config/nwg-panel/menu-start.css
 
 ## Generate GTK-Theme if not cached yet
 if [ ! -d "/home/Magnus/.themes/${filetitle}" ] || [ "$1" = "-R" ]; then
