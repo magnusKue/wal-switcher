@@ -15,4 +15,4 @@ Firefox - Use the pywal plugin
 VScode - Use the pywal plugin
 
 
-Here is how the the live updates look: ![Reddit](https://www.reddit.com/r/unixporn/comments/1chv3tr/hyprland_everything_pywal/)
+Here is how the the live updates look: [Reddit](https://www.reddit.com/r/unixporn/comments/1chv3tr/hyprland_everything_pywal/)
