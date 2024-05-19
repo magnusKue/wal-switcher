@@ -14,7 +14,7 @@ else
 	exit 0
 fi
 
-###### INITIATE ANIMATION ---------------------------------------------
+###### INITIATE ANIMATION ----------------------------------------------
 
 ## change wallpaper
 swww img "$selected_path" --transition-type center &
@@ -24,6 +24,11 @@ killall dunst
 
 sleep 1.5 # wait for wallpaper animation
 
+#### -------------------------------------------------------------------
+
+### Rofi
+sed -i "" /home/Magnus/.config/wal/templates/style-5.rasi
+sed -i "s|url(\"/[^\"]*\", width);|url(\"$selected_path\", width);|g" /home/Magnus/.config/wal/templates/style-5.rasi
 ##### MAKE COLORS ------------------------------------------------------
 
 wal -i "$selected_path" -n
@@ -40,9 +45,7 @@ filetitle="${filename%.*}"
 
 #### --------------------------------------------------------------------
 
-
-### UPDATE
-
+### Firefox
 pywalfox update
 
 ### Hyprland
@@ -50,7 +53,6 @@ sed -i "s/^    col.active_border =.*/    col.active_border = rgba(${color7:1}ff)
 sed -i "s/^    col.inactive_border =.*/    col.inactive_border = rgba(${color2:1}aa)" /home/Magnus/.config/hypr/hyprland.conf
 
 ## Edit Spicetify theme
-
 sed -i "/^main[[:space:]]*=/s/=.*/= ${background:1}/" ~/.config/spicetify/Themes/Sleek/color.ini
 sed -i "/^sidebar[[:space:]]*=/s/=.*/= ${background:1}/" ~/.config/spicetify/Themes/Sleek/color.ini
 sed -i "/^nav-active-text[[:space:]]*=/s/=.*/= ${background:1}/" ~/.config/spicetify/Themes/Sleek/color.ini
@@ -89,7 +91,7 @@ fi
 ## Apply GTK-Theme
 sed -i "s/^gtk-theme-name=.*/gtk-theme-name=${filetitle}/" "/home/Magnus/.config/gtk-3.0/settings.ini"
 
-/home/Magnus/code/gtk-themeswitcher.sh -M
+/home/Magnus/code/system/gtk-themeswitcher.sh -M
 
 ## Notification
 if [ "$generated" = "true" ]; then
