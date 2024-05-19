@@ -2,9 +2,12 @@
 
 directory="/home/Magnus/Bilder/wallpapers"
 
+# convert all webp to png images (to work with rofi theme)
+/home/Magnus/code/system/converter.sh "$directory"
+
 items=$(ls /home/Magnus/Bilder/wallpapers/)
 
-selected=$(echo "$items" | rofi -dmenu -p "Select an item:")
+selected=$(echo "$items" | rofi -dmenu -p "Select an item:" -show-icons)
 
 if [ -n "$selected" ]; then
 	selected_path="$directory/$selected"
@@ -29,6 +32,7 @@ sleep 1.5 # wait for wallpaper animation
 ### Rofi
 sed -i "" /home/Magnus/.config/wal/templates/style-5.rasi
 sed -i "s|url(\"/[^\"]*\", width);|url(\"$selected_path\", width);|g" /home/Magnus/.config/wal/templates/style-5.rasi
+
 ##### MAKE COLORS ------------------------------------------------------
 
 wal -i "$selected_path" -n
@@ -90,7 +94,6 @@ fi
 
 ## Apply GTK-Theme
 sed -i "s/^gtk-theme-name=.*/gtk-theme-name=${filetitle}/" "/home/Magnus/.config/gtk-3.0/settings.ini"
-
 /home/Magnus/code/system/gtk-themeswitcher.sh -M
 
 ## Notification
