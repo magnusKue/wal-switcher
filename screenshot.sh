@@ -1,8 +1,5 @@
 #!/bin/bash
 
-killall rofi
-sleep 0.5
-
 # Define the directory to save screenshots
 save_dir="/home/Magnus/Bilder/Screenshots"
 
@@ -10,6 +7,8 @@ save_dir="/home/Magnus/Bilder/Screenshots"
 timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
 filename="screenshot_$timestamp.png"
 if [[ " $@ " =~ " -f " ]]; then
+	killall rofi
+	sleep 0.5
 	grimshot --notify savecopy screen "$save_dir/$filename"
 fi
 
