@@ -19,16 +19,9 @@ uptime="`uptime -p | sed -e 's/up //g'`"
 host=`hostname`
 
 # Options
-areass=' '
-areass=' '
-color=' '
-fullss='󰹑 '
-fullss=' ' 
-fullss=' ' 
-suspend=''
-logout=''
-yes=''
-no=''
+speaker='󰓃 '
+speaker='󰴸 '
+headphones=' '
 
 # Rofi CMD
 rofi_cmd() {
@@ -38,6 +31,9 @@ rofi_cmd() {
 		-me-accept-entry "MousePrimary" \
 		-me-select-entry "MouseDPrimary" \
 		-click-to-exit \
+		-theme-str 'window {location: west; anchor: west; fullscreen: false; width: 80px; x-offset: 4px;}' \
+		-theme-str 'listview {columns: 1; lines: 2;}' \
+		-theme-str 'element-text {horizontal-alignment: 3.0;}' \
 		-theme /usr/share/rofi/themes/ssmenu.rasi
 }
 
@@ -61,26 +57,19 @@ confirm_exit() {
 
 # Pass variables to rofi dmenu
 run_rofi() {
-	echo -e "$fullss\n$areass\n$color" | rofi_cmd
+	echo -e "$headphones\n$speaker" | rofi_cmd
 }
 
 
 # Actions
 chosen="$(run_rofi)"
 case ${chosen} in
-    $areass)
-		~/code/system/screenshot.sh -a
-        ;;
-    $fullss)
-		~/code/system/screenshot.sh -f
-        ;;
-    $color)
-		~/code/system/colorpicker.sh
-        ;;
-    $suspend)
-		run_cmd --suspend
-        ;;
-    $logout)
-		run_cmd --logout
+    $headphones)
+        	pactl set-default-sink "alsa_output.pci-0000_0b_00.3.pro-output-0"
+		notify-send -u low "Default audio sink set to HEADPHONES"
+	;;
+    $speaker)
+        	pactl set-default-sink "alsa_output.pci-0000_09_00.1.hdmi-stereo-extra4"
+		notify-send -u low "Default audio sink set to HDMI"
         ;;
 esac
