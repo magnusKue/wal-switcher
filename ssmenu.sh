@@ -19,9 +19,11 @@ uptime="`uptime -p | sed -e 's/up //g'`"
 host=`hostname`
 
 # Options
-shutdown=''
-reboot=''
-lock=''
+areass=' '
+color=' '
+fullss='󰹑 '
+fullss=' ' 
+fullss=' ' 
 suspend=''
 logout=''
 yes=''
@@ -34,7 +36,7 @@ rofi_cmd() {
 		-mesg "Uptime: $uptime" \
 		-me-accept-entry "MousePrimary" \
 		-me-select-entry "MouseDPrimary" \
-		-theme /usr/share/rofi/themes/powermenu.rasi
+		-theme /usr/share/rofi/themes/ssmenu.rasi
 }
 
 # Confirmation CMD
@@ -47,7 +49,7 @@ confirm_cmd() {
 		-dmenu \
 		-p 'Confirmation' \
 		-mesg 'Are you Sure?' \
-		-theme /usr/share/rofi/themes/powermenu.rasi
+		-theme /usr/share/rofi/themes/ssmenu.rasi
 }
 
 # Ask for confirmation
@@ -57,54 +59,21 @@ confirm_exit() {
 
 # Pass variables to rofi dmenu
 run_rofi() {
-	echo -e "$lock\n$suspend\n$logout\n$reboot\n$shutdown" | rofi_cmd
+	echo -e "$fullss\n$areass\n$color" | rofi_cmd
 }
 
-# Execute Command
-run_cmd() {
-	selected="$(confirm_exit)"
-	if [[ "$selected" == "$yes" ]]; then
-		if [[ $1 == '--shutdown' ]]; then
-			systemctl poweroff
-		elif [[ $1 == '--reboot' ]]; then
-			systemctl reboot
-		elif [[ $1 == '--suspend' ]]; then
-			mpc -q pause
-			amixer set Master mute
-			systemctl suspend
-		elif [[ $1 == '--logout' ]]; then
-			if [[ "$DESKTOP_SESSION" == 'openbox' ]]; then
-				openbox --exit
-			elif [[ "$DESKTOP_SESSION" == 'bspwm' ]]; then
-				bspc quit
-			elif [[ "$DESKTOP_SESSION" == 'i3' ]]; then
-				i3-msg exit
-			elif [[ "$DESKTOP_SESSION" == 'plasma' ]]; then
-				qdbus org.kde.ksmserver /KSMServer logout 0 0 0
-			elif [[ "$DESKTOP_SESSION" == 'hyprland' ]]; then
-				hyprctl dispatch exit
-			fi
-		fi
-	else
-		exit 0
-	fi
-}
 
 # Actions
 chosen="$(run_rofi)"
 case ${chosen} in
-    $shutdown)
-		run_cmd --shutdown
+    $areass)
+		~/code/system/screenshot.sh -a
         ;;
-    $reboot)
-		run_cmd --reboot
+    $fullss)
+		~/code/system/screenshot.sh -f
         ;;
-    $lock)
-		if [[ -x '/usr/bin/betterlockscreen' ]]; then
-			betterlockscreen -l
-		elif [[ -x '/usr/bin/i3lock' ]]; then
-			i3lock
-		fi
+    $color)
+		~/code/system/colorpicker.sh
         ;;
     $suspend)
 		run_cmd --suspend
