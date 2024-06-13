@@ -6,7 +6,7 @@ Dunst - generate a template config file for pywal and use it from pywals cache b
 
 Hyprland - Use sed to edit the config. This should apply live as Hyprland uses a Filewatcher.
 
-Spicetify - Start Spotify using "spicetify watch" (here: launchtify.sh) to enable the filewatcher for colors.ini. This way you can also jsut use sed.
+Spicetify - Start Spotify using "spicetify watch" (here: launchtify.sh) to enable the filewatcher for colors.ini. This way you can also just use sed.
 
 GTK Themes - Generate custom variations of the oomox color theme using the script provided by its creators 
 
