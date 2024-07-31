@@ -5,30 +5,21 @@ directory="/home/Magnus/Bilder/wallpapers"
 # convert all webp to png images (to work with rofi theme)
 /home/Magnus/code/system/converter.sh "$directory"
 
-items=$(ls /home/Magnus/Bilder/wallpapers/)
-
-selected=$(echo "$items" | rofi -dmenu -p "Select an item:" -show-icons)
-
-if [ -n "$selected" ]; then
-	selected_path="$directory/$selected"
-	echo "$selected_path"
-else
-	echo "No item selected. Quitting.."
-	exit 0
-fi
+selected_path="$1"
+echo "$selected_path"
 
 ###### INITIATE ANIMATION ----------------------------------------------
 
-## change wallpaper
-swww img "$selected_path" --transition-type center &
-
 ## kill dunst
-killall dunst
+# killall dunst
 
 sleep 1.5 # wait for wallpaper animation
 
 #### -------------------------------------------------------------------
 
+### Rofi
+sed -i "" /home/Magnus/.config/wal/templates/style-5.rasi
+sed -i "s|url(\"/[^\"]*\", width);|url(\"$selected_path\", width);|g" /home/Magnus/.config/wal/templates/style-5.rasi
 
 ##### MAKE COLORS ------------------------------------------------------
 
@@ -46,8 +37,10 @@ filetitle="${filename%.*}"
 
 #### --------------------------------------------------------------------
 
-### Rofi
-sudo python /home/Magnus/code/system/wallpath-changer.py /home/Magnus/.cache/wal/style-5.rasi $selected_path
+### rofi
+sudo python /home/Magnus/code/system/rofi-wallpath-changer.py /home/Magnus/.cache/wal/style-5.rasi $selected_path
+
+sudo python /home/Magnus/code/system/hyprlock-wallpath-changer.py /home/Magnus/.config/hypr/hyprlock.conf $selected_path
 
 ### Firefox
 pywalfox update
@@ -77,14 +70,14 @@ sed -i "/^tab-active[[:space:]]*=/s/=.*/= ${background:1}/" ~/.config/spicetify/
 sed -i "/^notfication[[:space:]]*=/s/=.*/= ${hl}/" ~/.config/spicetify/Themes/Sleek/color.ini
 sed -i "/^misc[[:space:]]*=/s/=.*/= ${color6:1}/" ~/.config/spicetify/Themes/Sleek/color.ini
 
-## restart dunst
-dunst -conf /home/Magnus/.cache/wal/dunstrc &
+## reload swaync css
+swaync-client -rs
 
 ## NWG-Menu
 cp /home/Magnus/.cache/wal/menu-start.css /home/Magnus/.config/nwg-panel/menu-start.css
 
 ## Generate GTK-Theme if not cached yet
-if [ ! -d "/home/Magnus/.themes/${filetitle}" ] || [ "$1" = "-R" ]; then
+if [ ! -d "/home/Magnus/.themes/${filetitle}" ] || [ "$2" = "-R" ]; then
 	/home/Magnus/apps/oomox-gtk-theme/change_color.sh -o "$filetitle" <(echo -e "BG=${background:1}\nBTN_BG=${background:1}\nBTN_FG=${foreground:1}\nFG=${foreground:1}\nGRADIENT=0.0\nHDR_BTN_BG=${hl2}\nHDR_BTN_FG=${foreground:1}\nHDR_BG=${hl2}\nHDR_FG=${foreground:1}\nROUNDNESS=4\nSEL_BG=${hl}\nSEL_FG=${foreground:1}\nSPACING=3\nTXT_BG=${background:1}\nTXT_FG=${foreground:1}\nWM_BORDER_FOCUS=${hl2}\nWM_BORDER_UNFOCUS=${foreground:1}\n")
 	generated="true"
 else
