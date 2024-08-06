@@ -5,6 +5,7 @@
 import sys
 
 file=sys.argv[1]
+target_str=sys.argv[2]
 print(f"opening {file}")
 
 try:
@@ -17,7 +18,7 @@ except:
 for index, line in enumerate(lines):
     if "background-image" in line:
         line_split = line.split('"')
-        line_split[1] = f'"{sys.argv[2]}"'
+        line_split[1] = f'"{target_str}"'
         lines[index] = "".join(line_split)
         print(lines[index])
 
