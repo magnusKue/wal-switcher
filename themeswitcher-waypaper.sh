@@ -38,7 +38,15 @@ filetitle="${filename%.*}"
 #### --------------------------------------------------------------------
 
 ### rofi
-sudo python /home/Magnus/code/system/rofi-wallpath-changer.py /home/Magnus/.cache/wal/style-5.rasi $selected_path
+downscale_path="/home/Magnus/.cache/wallpapers/rofi-downscales/$filename"
+if [ ! -e "$downscale_path" ]; then
+	notify-send "Generated downscale"	
+	magick $selected_path -resize 30% -blur 0x3 "$downscale_path"
+else
+	notify-send "Downscale loaded from cache"
+fi
+
+sudo python /home/Magnus/code/system/rofi-wallpath-changer.py /home/Magnus/.cache/wal/style-5.rasi $downscale_path
 
 sudo python /home/Magnus/code/system/hyprlock-wallpath-changer.py /home/Magnus/.config/hypr/hyprlock.conf $selected_path
 
@@ -96,7 +104,9 @@ sed -i "s/^gtk-theme-name=.*/gtk-theme-name=\"${filetitle}\"/" "/home/Magnus/.gt
 
 ## Notification
 if [ "$generated" = "true" ]; then
-	dunstify -u low -r 2354 "Theme updated :: GTK-theme generated"
+	notify-send "GTK-Theme generated"
 else
-	dunstify -u low -r 2354 "Theme updated :: GTK-theme loaded from cache"
+	notify-send "GTK-Theme loaded from cache"
 fi
+
+notify-send "Theme updated"
